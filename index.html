@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tu Bolsillo App — Tus finanzas, tus reglas</title>
+<meta name="description" content="Controlá tus finanzas en Bs. y USD con tasa BCV real, presupuestos, metas y un Coach Financiero que analiza tus propios datos. Tus datos viven en tu teléfono, no en un servidor ajeno.">
+<link rel="icon" href="icon-512.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-512.png">
+<style>
+  :root {
+    --ink: #12201A;
+    --surface: #1B2A22;
+    --surface-2: #223328;
+    --gold: #C9A24B;
+    --coral: #E2694B;
+    --teal: #6FA98D;
+    --text: #EDE7D9;
+    --text-dim: #9AA79C;
+    --text-faint: #5E6B60;
+    --line: rgba(237,231,217,0.12);
+    --font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+  img, svg { display: block; max-width: 100%; }
+  button:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(18,32,26,0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
+  .logo { display: flex; align-items: center; gap: 9px; font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 19px; color: var(--gold); }
+  .nav-links { display: flex; gap: 32px; font-size: 14px; color: var(--text-dim); }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { background: var(--gold); color: var(--ink); font-weight: 700; font-size: 13.5px; padding: 9px 18px; border-radius: 8px; }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 76px 0 64px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ''; position: absolute; top: -180px; right: -160px; width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(201,162,75,0.14), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; position: relative; }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+  .eyebrow { font-size: 12px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+  .eyebrow::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); display: inline-block; }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: 46px; line-height: 1.12; letter-spacing: -0.5px; margin-bottom: 20px; }
+  h1 em { color: var(--gold); font-style: italic; }
+  .hero p.lede { font-size: 17px; color: var(--text-dim); max-width: 480px; margin-bottom: 32px; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .btn { display: inline-flex; align-items: center; gap: 9px; padding: 13px 22px; border-radius: 10px; font-size: 14.5px; font-weight: 700; }
+  .btn-primary { background: var(--gold); color: var(--ink); }
+  .btn-secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--line); }
+  .fine-print { font-size: 12.5px; color: var(--text-faint); }
+
+  /* ---------- coach card (signature) ---------- */
+  .coach-showcase { position: relative; }
+  .coach-card {
+    background: linear-gradient(160deg, var(--surface) 0%, var(--surface-2) 100%);
+    border: 1px solid rgba(201,162,75,0.35);
+    border-radius: 20px; padding: 28px 26px;
+    box-shadow: 0 40px 80px -30px rgba(0,0,0,0.7);
+  }
+  .coach-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .coach-card-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-faint); }
+  .coach-score-row { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+  .coach-score { font-family: var(--font-mono); font-size: 56px; font-weight: 700; color: var(--teal); line-height: 1; }
+  .coach-band { font-family: var(--font-display); font-size: 17px; color: var(--teal); }
+  .coach-sub { font-size: 12.5px; color: var(--text-faint); margin-bottom: 20px; }
+  .coach-insight { border-left: 3px solid; border-radius: 8px; background: rgba(0,0,0,0.15); padding: 12px 14px; margin-bottom: 10px; }
+  .coach-insight-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .coach-insight-body { font-size: 11.5px; color: var(--text-dim); line-height: 1.5; }
+  .floating-tag {
+    position: absolute; background: var(--ink); border: 1px solid var(--gold);
+    color: var(--gold); font-size: 11px; font-weight: 700; padding: 7px 13px;
+    border-radius: 20px; box-shadow: 0 10px 24px rgba(0,0,0,0.5);
+  }
+  .tag-1 { top: -14px; left: -18px; }
+  .tag-2 { bottom: 18px; right: -22px; }
+  @media (max-width: 480px) { .floating-tag { display: none; } }
+
+  /* ---------- sections shared ---------- */
+  section { padding: 72px 0; }
+  .section-head { max-width: 560px; margin-bottom: 44px; }
+  .section-eyebrow { font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
+  h2 { font-family: var(--font-display); font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+  .section-head p { color: var(--text-dim); font-size: 15.5px; }
+
+  /* ---------- features ---------- */
+  .features { border-top: 1px solid var(--line); }
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 860px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .feature-grid { grid-template-columns: 1fr; } }
+  .feature-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 26px 24px; }
+  .feature-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; color: var(--gold); margin-bottom: 16px; }
+  .feature-card h3 { font-family: var(--font-display); font-size: 17px; margin-bottom: 8px; }
+  .feature-card p { font-size: 13.5px; color: var(--text-dim); }
+
+  /* ---------- screens ---------- */
+  .screens { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .screen-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 860px) { .screen-row { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; } }
+  .phone-frame { background: var(--ink); border-radius: 22px; padding: 10px; border: 1px solid var(--line); }
+  .phone-screen { background: var(--ink); border-radius: 14px; overflow: hidden; padding: 16px 14px; min-height: 320px; }
+  .screen-caption { text-align: center; margin-top: 14px; font-size: 13px; color: var(--text-dim); }
+  .mini-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-faint); margin-bottom: 3px; }
+  .mini-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .mini-card { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+  .mini-big { font-family: var(--font-mono); font-weight: 700; font-size: 17px; }
+
+  /* ---------- privacy callout ---------- */
+  .privacy-callout {
+    background: linear-gradient(135deg, rgba(111,169,141,0.1), var(--surface));
+    border: 1px solid rgba(111,169,141,0.3); border-radius: 20px; padding: 44px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+  }
+  @media (max-width: 800px) { .privacy-callout { grid-template-columns: 1fr; padding: 32px 24px; } }
+  .privacy-callout h2 { font-size: 26px; }
+  .privacy-list { list-style: none; }
+  .privacy-list li { display: flex; gap: 12px; margin-bottom: 14px; font-size: 14px; color: var(--text-dim); }
+  .privacy-list li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+
+  /* ---------- install steps ---------- */
+  .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 800px) { .install-grid { grid-template-columns: 1fr; } }
+  .install-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+  .install-card h3 { font-family: var(--font-display); font-size: 18px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .install-card ol { padding-left: 20px; font-size: 13.5px; color: var(--text-dim); }
+  .install-card ol li { margin-bottom: 8px; }
+
+  /* ---------- final cta ---------- */
+  .final-cta { text-align: center; padding: 90px 0; }
+  .final-cta h2 { font-size: 34px; margin-bottom: 14px; }
+  .final-cta p { color: var(--text-dim); margin-bottom: 32px; }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 40px 0; }
+  .footer-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--text-faint); }
+  .footer-links { display: flex; gap: 22px; }
+  .footer-links a:hover { color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><img src="icon-512.png" alt="" style="width:26px;height:26px;border-radius:7px"> Tu Bolsillo App</div>
+    <nav class="nav-links">
+      <a href="#caracteristicas">Características</a>
+      <a href="#capturas">Capturas</a>
+      <a href="#privacidad">Privacidad</a>
+      <a href="#instalar">Instalar</a>
+    </nav>
+    <a href="#instalar" class="nav-cta">Empezar gratis</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Finanzas en Bs. y USD, sin vueltas</div>
+      <h1>Tu plata, <em>tus reglas</em>.</h1>
+      <p class="lede">Registrá ingresos y gastos en bolívares y dólares con la tasa BCV del día, definí presupuestos y metas, y dejá que el Coach Financiero te diga —con tus propios números— si vas bien o si hay que ajustar algo.</p>
+      <div class="cta-row">
+        <a href="#instalar" class="btn btn-primary">📲 Instalar ahora</a>
+        <a href="#caracteristicas" class="btn btn-secondary">Ver qué incluye</a>
+      </div>
+      <div class="fine-print">Gratis para empezar · Tus datos quedan en tu teléfono, no en un servidor nuestro</div>
+    </div>
+    <div class="coach-showcase">
+      <div class="floating-tag tag-1">🔒 100% local</div>
+      <div class="floating-tag tag-2">🇻🇪 Tasa BCV real</div>
+      <div class="coach-card">
+        <div class="coach-card-head">
+          <span class="coach-card-label">Coach Financiero</span>
+          <span class="coach-card-label">Agosto 2026</span>
+        </div>
+        <div class="coach-score-row">
+          <span class="coach-score">78</span>
+          <span class="coach-band">Estable</span>
+        </div>
+        <div class="coach-sub">Calculado con tus propios movimientos, en tu teléfono</div>
+        <div class="coach-insight" style="border-color:#E0A94E">
+          <div class="coach-insight-title" style="color:#E0A94E">⚠ Margen ajustado este mes</div>
+          <div class="coach-insight-body">Te quedó menos del 5% de tu ingreso libre. Cualquier imprevisto podría desequilibrarte.</div>
+        </div>
+        <div class="coach-insight" style="border-color:var(--teal)">
+          <div class="coach-insight-title" style="color:var(--teal)">Fondo de emergencia saludable</div>
+          <div class="coach-insight-body">Tu ahorro cubre 3.2 meses de gastos — dentro del rango recomendado.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="caracteristicas">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Qué incluye</div>
+      <h2>Todo lo que un control de gastos serio necesita</h2>
+      <p>Sin funciones de relleno — cada parte de la app existe porque resuelve algo puntual de manejar plata en dos monedas.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">✺</div>
+        <h3>Coach Financiero</h3>
+        <p>Un diagnóstico con puntaje de 0 a 100, alertas priorizadas y consejos de educación financiera — todo calculado con reglas fijas sobre tus propios datos, sin IA externa ni servidor de por medio.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">$</div>
+        <h3>Doble moneda con tasa real</h3>
+        <p>Cargá movimientos en bolívares o dólares. La app trae la tasa BCV del día automáticamente y guarda el histórico, para que tus reportes reflejen la tasa real de cada fecha.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">◎</div>
+        <h3>Presupuestos y Metas</h3>
+        <p>Definí un límite por categoría, una meta de ahorro, y un ingreso mensual esperado. La app compara todo automáticamente y te avisa si el plan no cierra.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">▤</div>
+        <h3>Compromisos de pago</h3>
+        <p>Cargá fechas de pagos fijos o en cuotas (créditos, servicios, suscripciones) y recibí un aviso antes de que venzan.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">☰</div>
+        <h3>Categorías a tu medida</h3>
+        <p>Empezá con las categorías que quieras y creá las tuyas propias en el momento, sin salir de la pantalla donde estás cargando un movimiento.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Privacidad real</h3>
+        <p>Nada se sube a un servidor nuestro. Si querés respaldo en la nube, se guarda directo en tu propia cuenta de Google Drive — nunca pasa por nosotros.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="capturas">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Así se ve</div>
+      <h2>Tres pantallas, toda la foto completa</h2>
+    </div>
+  </div>
+</section>
+
+<section class="screens">
+  <div class="wrap">
+    <div class="screen-row">
+      <div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="mini-label">Resumen · Agosto 2026</div>
+            <div class="mini-row"><span style="font-size:12px;color:var(--text-dim)">BCV hoy</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--gold)">Bs. 777,42</span></div>
+            <div class="mini-card">
+              <div class="mini-label">Saldo Parcial (Disponible)</div>
+              <div class="mini-big" style="color:var(--teal)">$ 294,00</div>
+              <div style="font-size:11px;color:var(--text-faint)">Bs. 10.474,00</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-label">Ingresos / Egresos</div>
+              <div class="mini-row" style="margin-bottom:0">
+                <span class="mini-big" style="font-size:14px;color:var(--teal)">↑ $1.064</span>
+                <span class="mini-big" style="font-size:14px;color:var(--coral)">↓ $1.382</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-caption">Resumen del mes, siempre a mano</div>
+      </div>
+      <div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="mini-label">Coach Financiero</div>
+            <div style="text-align:center;padding:10px 0">
+              <div style="font-family:var(--font-mono);font-size:38px;font-weight:700;color:#E0A94E">63</div>
+              <div style="font-size:10px;color:var(--text-faint);letter-spacing:0.6px;text-transform:uppercase">Salud financiera</div>
+            </div>
+            <div class="mini-card" style="border-left:3px solid var(--coral)">
+              <div style="font-size:11.5px;font-weight:700;color:var(--coral)">⚠ Compromisos altos</div>
+              <div style="font-size:10.5px;color:var(--text-dim)">Superan tu saldo disponible este mes.</div>
+            </div>
+            <div class="mini-card" style="border-left:3px solid var(--gold);margin-bottom:0">
+              <div style="font-size:10.5px;color:var(--text-dim);font-style:italic">"El fondo de emergencia va primero, antes de cualquier gasto grande."</div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-caption">Diagnóstico honesto, no solo números</div>
+      </div>
+      <div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="mini-label">Metas</div>
+            <div class="mini-card">
+              <div class="mini-row" style="margin-bottom:6px"><span style="font-size:12px">Ahorro del mes</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--teal)">53%</span></div>
+              <div style="background:var(--ink);border-radius:6px;height:6px;overflow:hidden"><div style="background:var(--coral);width:53%;height:100%"></div></div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-row" style="margin-bottom:6px"><span style="font-size:12px">Presupuesto vs Ingreso</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--teal)">66%</span></div>
+              <div style="background:var(--ink);border-radius:6px;height:6px;overflow:hidden"><div style="background:var(--teal);width:66%;height:100%"></div></div>
+            </div>
+            <div class="mini-card" style="margin-bottom:0">
+              <div class="mini-label">Ingreso Mensual (meta)</div>
+              <div style="font-family:var(--font-mono);font-size:13px">$1.064 de $2.000</div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-caption">Metas claras, no solo buenas intenciones</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="privacidad">
+  <div class="wrap">
+    <div class="privacy-callout">
+      <div>
+        <div class="section-eyebrow">La diferencia real</div>
+        <h2>Tus finanzas no son nuestro negocio.</h2>
+        <p style="color:var(--text-dim);font-size:14.5px;margin-top:10px">Literal: no tenemos servidor donde guardamos los datos financieros de nuestros usuarios. No podemos verlos, venderlos, ni perderlos en una filtración — porque nunca los tenemos.</p>
+      </div>
+      <ul class="privacy-list">
+        <li>Todo se guarda en tu propio teléfono</li>
+        <li>Respaldo opcional directo a tu Google Drive personal (no al nuestro)</li>
+        <li>Sin rastreo de ubicación (GPS), nunca</li>
+        <li>Podés exportar o borrar todo cuando quieras, sin pedirnos permiso</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="instalar">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Cómo empezar</div>
+      <h2>Instalala en 1 minuto, sin tienda de apps</h2>
+      <p>Funciona como una app normal en tu pantalla de inicio, en Android o iPhone.</p>
+    </div>
+    <div class="install-grid">
+      <div class="install-card">
+        <h3>🤖 Android</h3>
+        <ol>
+          <li>Abrí el link en Chrome</li>
+          <li>Tocá el menú (⋮) arriba a la derecha</li>
+          <li>Elegí "Instalar aplicación" o "Agregar a pantalla de inicio"</li>
+          <li>Confirmá — listo, queda como cualquier app</li>
+        </ol>
+      </div>
+      <div class="install-card">
+        <h3>🍎 iPhone</h3>
+        <ol>
+          <li>Abrí el link en Safari (tiene que ser Safari)</li>
+          <li>Tocá el ícono de compartir (cuadrado con flecha)</li>
+          <li>Elegí "Agregar a pantalla de inicio"</li>
+          <li>Confirmá — listo, queda como cualquier app</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap">
+    <h2>Empezá a llevar la cuenta clara hoy.</h2>
+    <p>Sin tarjeta de crédito, sin registro con datos personales, sin letra chica.</p>
+    <a href="#instalar" class="btn btn-primary">📲 Instalar Tu Bolsillo App</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Tu Bolsillo App. Hecho en Venezuela 🇻🇪</span>
+    <div class="footer-links">
+      <a href="https://wa.me/584121390188" target="_blank" rel="noopener">📱 WhatsApp</a>
+      <a href="mailto:tubolsilloapp26@gmail.com">tubolsilloapp26@gmail.com</a>
+      <a href="./privacidad.html">Política de Privacidad y Términos</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
