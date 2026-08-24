@@ -50,6 +50,12 @@
   .nav-links a:hover { color: var(--text); }
   .nav-cta { background: var(--gold); color: var(--ink); font-weight: 700; font-size: 13.5px; padding: 9px 18px; border-radius: 8px; }
   @media (max-width: 720px) { .nav-links { display: none; } }
+  @media (max-width: 400px) {
+    .wrap { padding: 0 16px; }
+    .logo { font-size: 15px; gap: 6px; }
+    .logo img { width: 22px; height: 22px; }
+    .nav-cta { font-size: 12px; padding: 8px 12px; white-space: nowrap; }
+  }
 
   /* ---------- hero ---------- */
   .hero { padding: 76px 0 64px; position: relative; overflow: hidden; }
@@ -215,7 +221,8 @@
   .footer-links { display: flex; justify-content: center; gap: 22px; margin-bottom: 20px; flex-wrap: wrap; }
   .footer-links a:hover { color: var(--text-dim); }
   .footer-disclosure { max-width: 560px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6; }
-  .footer-made { font-weight: 700; color: var(--text-dim); }
+  .footer-made { font-weight: 700; color: var(--text-dim); display: inline-flex; align-items: center; gap: 7px; justify-content: center; }
+  .flag-ve { width: 20px; height: 14px; border-radius: 2px; flex-shrink: 0; }
 
   /* ---------- floating contact buttons ---------- */
   .float-contact { position: fixed; right: 22px; bottom: 22px; z-index: 100; display: flex; flex-direction: column; gap: 12px; }
@@ -569,7 +576,7 @@
       </a>
     </div>
     <p class="footer-disclosure">Tus movimientos, presupuestos y metas se guardan solo en tu teléfono. Si conectas Google Drive para respaldo, se guarda directo en tu propia cuenta — nunca pasa por nuestros servidores.</p>
-    <p class="footer-made">Hecho en Venezuela 🇻🇪</p>
+    <p class="footer-made">Hecho en Venezuela <svg class="flag-ve" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg"><rect width="3" height="2" fill="#00247D"/><rect width="3" height="0.667" fill="#FFCC00"/><rect y="1.333" width="3" height="0.667" fill="#CF142B"/><g fill="#FFF"><circle cx="0.85" cy="1" r="0.055"/><circle cx="1.0" cy="0.92" r="0.055"/><circle cx="1.15" cy="0.87" r="0.055"/><circle cx="1.3" cy="0.85" r="0.055"/><circle cx="1.45" cy="0.85" r="0.055"/><circle cx="1.6" cy="0.87" r="0.055"/><circle cx="1.75" cy="0.92" r="0.055"/><circle cx="1.9" cy="1" r="0.055"/></g></svg></p>
   </div>
 </footer>
 
